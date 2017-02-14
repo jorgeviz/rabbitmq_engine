@@ -1,11 +1,11 @@
 #-*- coding:utf-8 -*-
 from rabbit_engine import RabbitEngine
+import json
+from pprint import pprint
 
 def callback(ch, method, properties, body):
-	print('properties')
-	print(properties)
-	print('body')
-	print(body)
+	body_json = json.loads(body.decode('utf-8'))
+	pprint(body_json)
 
 consumer = RabbitEngine(purge=True)
 consumer.set_callback(callback)

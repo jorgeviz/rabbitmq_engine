@@ -5,7 +5,7 @@ Uses pika library to create a simple consumers and producer with json serializat
 ## Environmental Variables
 
 ```
-	export RABBIT_HOST='localhost'
+	export RABBITMQ_HOST='localhost'
 	export RABBIT_ROUTING_KEY='tasks'
 	export RABBIT_QUEUE='tasks'
 	export RABBIT_EXCHANGE=''
@@ -47,3 +47,10 @@ Uses pika library to create a simple consumers and producer with json serializat
 	# Close socket connection
 	producer.close()
 ```
+
+
+### TO DO
+
+* Check out `send()`, edit to put either passed or default key
+* Add Kafka compatibility
+* Add Streamer selector

@@ -24,10 +24,10 @@ class RabbitEngine(object):
         if purge:
             self.channel.queue_purge(queue=self.rabbit_queue)
 
-    def publish(self, msg):
+    def send(self, key, msg):
         # Pubishing the message to the queue
         self.channel.basic_publish(exchange=self.rabbit_exchange,
-                      routing_key=self.rabbit_key,
+                      routing_key=key,
                       body=json.dumps(msg),# ensure_ascii=False),
                       properties=pika.BasicProperties(content_type='application/json', delivery_mode=2))
 
