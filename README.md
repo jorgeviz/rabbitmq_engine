@@ -1,15 +1,16 @@
-# RabbitMQ class with JSON serializer
+# Data Streamer class with JSON serializer
 
-Uses pika library to create a simple consumers and producer with json serialization
+Library to set producers and consumers to stream data.
+Currently uses pika library to create a simple consumers and producer with json serialization and stream data using RABBIT as broker.
 
 ## Environmental Variables
 
 ```
-	export RABBITMQ_HOST='localhost'
-	export RABBIT_ROUTING_KEY='tasks'
-	export RABBIT_QUEUE='tasks'
-	export RABBIT_EXCHANGE=''
-	export RABBIT_EXCHANGE_TYPE='fanout'
+	export STREAMER_HOST='localhost'
+	export STREAMER_ROUTING_KEY='tasks'
+	export STREAMER_QUEUE='tasks'
+	export STREAMER_EXCHANGE=''
+	export STREAMER_EXCHANGE_TYPE='fanout'
 ```
 
 ## Simple Consumer usage
@@ -36,13 +37,13 @@ Uses pika library to create a simple consumers and producer with json serializat
 	from datetime import datetime as dt
 
 	# Instantiate producer or consumer with a dict as well, purge param clears the queue before publishing
-	producer = RabbitEngine({'rabbit_host':'localhost', 
-							'rabbit_queue':'tasks', 
-							'rabbit_key':'tasks'},
+	producer = RabbitEngine({'host':'localhost', 
+							'queue':'tasks', 
+							'routing_key':'tasks'},
 							purge=True)
 
 	# Publishes with designated or predefined params
-	producer.publish({'message': 'Hello world!', 'date':str(dt.utcnow())})
+	producer.send('tasks',{'message': 'Hello world!', 'date':str(dt.utcnow())})
 
 	# Close socket connection
 	producer.close()
@@ -51,6 +52,6 @@ Uses pika library to create a simple consumers and producer with json serializat
 
 ### TO DO
 
-* Check out `send()`, edit to put either passed or default key
+* Add `multi_q` argument to method `send()` to allow multiple queues publishes within one instance
 * Add Kafka compatibility
 * Add Streamer selector
