@@ -6,14 +6,14 @@ import json
 class RabbitEngine(object):
     def __init__(self, config={}, purge=False):
         #Class variables
-        self.rabbit_host = config['rabbit_host'] if 'rabbit_host' in config.keys() else os.getenv('RABBITMQ_HOST')
-        self.rabbit_key = config['rabbit_key'] if 'rabbit_key' in config.keys() else os.getenv('RABBIT_ROUTING_KEY')
-        self.rabbit_queue = config['rabbit_queue'] if 'rabbit_queue' in config.keys() else os.getenv('RABBIT_QUEUE')
-        self.rabbit_exchange = config['rabbit_exchange'] if 'rabbit_exchange' in config.keys() else os.getenv('RABBIT_EXCHANGE')
-        self.rabbit_exchange_type = config['rabbit_exchange_type'] if 'rabbit_exchange_type' in config.keys() else os.getenv('RABBIT_EXCHANGE_TYPE')
+        self.rabbit_host = config['host'] if 'host' in config.keys() else os.getenv('STREAMER_HOST','localhost')
+        self.rabbit_key = config['routing_key'] if 'routing_key' in config.keys() else os.getenv('STREAMER_ROUTING_KEY','')
+        self.rabbit_queue = config['queue'] if 'queue' in config.keys() else os.getenv('STREAMER_QUEUE','')
+        self.rabbit_exchange = config['exchange'] if 'exchange' in config.keys() else os.getenv('STREAMER_EXCHANGE','')
+        self.rabbit_exchange_type = config['exchange_type'] if 'exchange_type' in config.keys() else os.getenv('STREAMER_EXCHANGE_TYPE','')
 
         # Initialize connection to the Rabbit Server
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters(self.rabbit_host))
+        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.rabbit_host,heartbeat_interval=0))
         self.channel = self.connection.channel()
         # Exchange declaration 
         if self.rabbit_exchange_type == '' and self.rabbit_exchange != '':
